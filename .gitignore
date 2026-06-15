@@ -1,0 +1,34 @@
+# Build output
+/build/
+/out/
+*.o
+*.obj
+*.exe
+*.pdb
+*.ilk
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+*.user
+*.swp
+.DS_Store
+
+# Dependencies fetched at configure time (GLFW via FetchContent)
+/build/_deps/
+/third_party/glfw/
+
+# Node (OpenSpec tooling is global; lockfiles not expected, but ignore stray installs)
+node_modules/
+
+# Large textbook PDF — reference only, NOT redistributed (CC BY-NC-SA 4.0).
+# Keep it locally under docs/Textbooks/ but never commit the 251 MB binary.
+docs/Textbooks/*.pdf

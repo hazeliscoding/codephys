@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-msvc
+            os: windows-latest
+            preset: windows-msvc
+          - name: ubuntu-gcc
+            os: ubuntu-latest
+            preset: linux-gcc
+          - name: ubuntu-clang
+            os: ubuntu-latest
+            preset: linux-clang
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # GLFW needs OpenGL + X11 development headers to build on Linux.
+      - name: Install Linux GL/X11 dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev xorg-dev
+
+      - name: Configure (fetches & builds GLFW; warnings-as-errors on first-party code)
+        run: cmake --preset ${{ matrix.preset }}
+
+      - name: Build
+        run: cmake --build --preset ${{ matrix.preset }}
+
+      # Tests are headless (doctest + physics only) — no display or GPU required.
+      - name: Test
+        run: ctest --preset ${{ matrix.preset }}

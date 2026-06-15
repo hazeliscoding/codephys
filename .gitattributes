@@ -1,0 +1,23 @@
+# Normalize line endings across Windows + Linux/WSL.
+# Text files are stored with LF in the repo; checked out native on each platform.
+* text=auto
+
+# Always LF for these (build/scripts/source) regardless of platform
+*.cpp   text eol=lf
+*.hpp   text eol=lf
+*.h     text eol=lf
+*.c     text eol=lf
+*.cmake text eol=lf
+*.txt   text eol=lf
+*.md    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.json  text eol=lf
+*.glsl  text eol=lf
+*.sh    text eol=lf
+
+# Treat as binary (no EOL conversion, no diff)
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.ttf   binary

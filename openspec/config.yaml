@@ -1,0 +1,68 @@
+schema: spec-driven
+
+# Project context — shown to AI when creating artifacts.
+context: |
+  CodePhys — a cross-platform C++ physics SIMULATION PLAYGROUND for relearning
+  introductory physics by implementing it. Curriculum: OpenStax College Physics 2e
+  (34 chapters). Full design: docs/design/DESIGN.md (source of truth); quick reference:
+  CLAUDE.md. It is a TEACHING engine, not a Box2D/Bullet competitor — physics must be
+  legible and numerics visible.
+
+  Tech stack:
+  - C++20. CMake >= 3.21 with CMakePresets (windows-msvc, linux-gcc, linux-clang).
+  - Compilers: MSVC (VS2022), GCC >= 11, Clang >= 14. Warnings-as-errors in CI.
+  - Graphics: OpenGL 3.3 Core via GLFW 3.4 (window/input/context). glad = vendored
+    generated GL loader.
+  - Tests: doctest (vendored, header-only, build/test-time only).
+  - Math/renderer/UI/text are all HAND-ROLLED.
+
+  Hard rules (do not violate in any proposal/design/task):
+  - Exactly ONE runtime dependency: GLFW. Build/test-only header-only deps (doctest,
+    glad) are allowed. Any new runtime dep must be justified explicitly; default is no.
+  - physics/ has ZERO non-stdlib includes (no GLFW/OpenGL/UI). It must stay headlessly
+    testable and renderer-agnostic. Never break this isolation.
+  - SI units everywhere internally; UI converts for display only. Boundary variables
+    carry unit suffixes (v0_mps, angle_rad).
+  - Cross-platform parity: builds & runs identically on Windows (MSVC) and Linux/WSL2.
+    No platform-specific code outside platform/.
+  - Cite the textbook next to equations: // College Physics 2e §7.2.
+
+  Layering (dependencies point downward only):
+    app -> scenes -> {physics, render, ui}
+    render -> physics::math   |   ui -> render   |   platform -> GLFW
+    physics -> stdlib ONLY
+  Repo layout: physics/ render/ ui/ platform/ app/ (app/scenes/) tests/ third_party/.
+
+  Conventions:
+  - snake_case files, PascalCase types, camelCase members/functions.
+  - Validate physics against closed-form solutions (projectile range, SHM/pendulum
+    period, Kepler) and conservation invariants (energy/momentum/angular momentum).
+    All physics tests run HEADLESS in CI on both compilers.
+  - Switchable integrators (ExplicitEuler / SemiImplicitEuler / Verlet / RK4) are a
+    pedagogical feature, not an afterthought.
+
+  Workflow: spec-driven via OpenSpec. Non-trivial work starts as a change proposal,
+  not ad-hoc edits. Phased roadmap (DESIGN.md §10): Phase 0 skeleton -> Phase 1 (math +
+  loop + 2D + projectile) -> Phase 2 (forces/energy/collisions) -> 3 (rotation/gases)
+  -> 4 (3D) -> 5 (E&M fields) -> 6 (waves/optics) -> 7 (modern-physics explainers).
+
+  Git: commit only when the user asks; never push without being asked. Code license
+  leaning MIT (unconfirmed).
+
+# Per-artifact rules.
+rules:
+  proposal:
+    - State which roadmap phase (DESIGN.md §10) the change belongs to.
+    - Always include a "Non-goals" section to fight scope creep across 34 chapters.
+    - Call out any new dependency explicitly and justify it against the one-runtime-dep
+      rule (GLFW only).
+  design:
+    - Respect the layering rules; never introduce includes that make physics/ depend on
+      rendering, UI, or platform code.
+    - Note cross-platform implications (Windows MSVC vs Linux/WSL2 + WSLg) for anything
+      touching build, windowing, or OpenGL.
+  tasks:
+    - Include a verification step that builds AND runs on both Windows and Linux/WSL
+      where applicable.
+    - For physics changes, include analytic-validation / conservation tests (headless).
+    - Keep tasks small and independently checkable.

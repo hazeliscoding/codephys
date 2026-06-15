@@ -1,0 +1,19 @@
+# CodePhys C++ style — matches the hand-written code in this repo and DESIGN §12.
+# 4-space indent, attached braces, 95-column limit, left-aligned pointers.
+# Naming (snake_case files, PascalCase types, camelCase members) is a convention,
+# not enforced by clang-format.
+---
+Language: Cpp
+BasedOnStyle: Google
+Standard: c++20
+ColumnLimit: 95
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+AccessModifierOffset: -4
+PointerAlignment: Left
+DerivePointerAlignment: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: false
+SortIncludes: true
+IncludeBlocks: Preserve

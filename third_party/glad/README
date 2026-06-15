@@ -1,0 +1,40 @@
+glad — vendored OpenGL function loader (generated, committed)
+=============================================================
+
+This is a *generated* GL loader, vendored per CLAUDE.md's dependency policy: GLFW is the
+only runtime dependency; glad is build-time only and ships nothing extra into the binary.
+The generated sources are committed (not fetched) so builds are reproducible without a
+network round-trip or a Python toolchain.
+
+Generation parameters
+----------------------
+  Generator : glad 1.x  (the "glad1" / classic generator, NOT glad2)
+  API       : gl = 3.3
+  Profile   : core
+  Language  : c
+  Spec      : Khronos OpenGL-Registry gl.xml
+  Extensions: none
+
+Command (reproduce from a clean checkout)
+-----------------------------------------
+  pip install "glad<2"
+  python -m glad --profile core --api gl=3.3 --generator c --reproducible \
+      --out-path third_party/glad
+
+Files
+-----
+  include/glad/glad.h      core GL 3.3 declarations + loader prototypes
+  include/KHR/khrplatform.h
+  src/glad.c               the loader implementation
+
+Usage
+-----
+  glad1 exposes a self-contained loader, gladLoadGL(), that resolves GL entry points via
+  the platform GL library (opengl32.dll on Windows, libGL on Linux). CodePhys calls it
+  after the GLFW context is made current (see platform/src/window.cpp). Using gladLoadGL()
+  rather than gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) keeps our first-party
+  code free of the function-pointer <-> object-pointer cast that -Wpedantic -Werror would
+  reject; glad.c itself is compiled without our strict warnings.
+
+Do not edit the generated files by hand. To change the GL version/profile, re-run the
+command above and update this README.

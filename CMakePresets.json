@@ -1,0 +1,61 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "windows-msvc",
+      "displayName": "Windows (MSVC)",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/windows-msvc"
+    },
+    {
+      "name": "linux-gcc",
+      "displayName": "Linux/WSL (GCC)",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux-gcc",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "linux-clang",
+      "displayName": "Linux/WSL (Clang)",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux-clang",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-msvc",
+      "configurePreset": "windows-msvc",
+      "configuration": "RelWithDebInfo"
+    },
+    { "name": "linux-gcc", "configurePreset": "linux-gcc" },
+    { "name": "linux-clang", "configurePreset": "linux-clang" }
+  ],
+  "testPresets": [
+    {
+      "name": "windows-msvc",
+      "configurePreset": "windows-msvc",
+      "configuration": "RelWithDebInfo",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "linux-gcc",
+      "configurePreset": "linux-gcc",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "linux-clang",
+      "configurePreset": "linux-clang",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}
