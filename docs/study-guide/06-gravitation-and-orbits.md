@@ -1,6 +1,6 @@
 # 06 · Gravitation & Orbits
 
-[← Numerical Integration](05-numerical-integration.md) · [Index](README.md) · [Next: The Simulation Loop & Time →](07-the-simulation-loop-and-time.md)
+[← Simulating Motion Faithfully](05-numerical-integration.md) · [Index](README.md)
 
 ---
 
@@ -148,4 +148,4 @@ method* as the single variable.
 
 ---
 
-[← Numerical Integration](05-numerical-integration.md) · [Index](README.md) · [Next: The Simulation Loop & Time →](07-the-simulation-loop-and-time.md)
+[← Simulating Motion Faithfully](05-numerical-integration.md) · [Index](README.md)

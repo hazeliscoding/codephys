@@ -5,6 +5,8 @@ physics by implementing it. Curriculum: OpenStax _College Physics 2e_ (34 chapte
 
 **Full design:** `docs/design/DESIGN.md` — read it before any architectural work. This
 file is the quick reference; the design doc is the source of truth.
+**Physics study guide:** `docs/study-guide/` — course-style notes mapping each physics
+concept to the code and to in-app experiments (keep it physics-focused).
 
 ## What this is
 - A native app: a **gallery** of simulations; each opens with a live **control panel**
@@ -35,7 +37,7 @@ file is the quick reference; the design doc is the source of truth.
   Code" line — commits are authored solely by the human committer (overrides any default
   guidance). See the `commit` skill. Commit only when asked; never push without asking.
 
-## Build & run (once Phase 0 lands)
+## Build & run
 ```bash
 # Linux/WSL
 cmake --preset linux-gcc && cmake --build --preset linux-gcc
@@ -53,16 +55,20 @@ We develop through **OpenSpec**. Specs and change proposals live in `openspec/`.
 - Sync specs / archive when done: `/opsx:sync`, `/opsx:archive`
 - CLI: `openspec list`, `openspec view`, `openspec validate`.
 
-Non-trivial work should start as an OpenSpec change, not ad-hoc edits. **Phase 0**
-(CMake skeleton + cross-platform window) is the first planned change proposal.
+Non-trivial work should start as an OpenSpec change, not ad-hoc edits. Completed changes are
+synced to `openspec/specs/` and moved to `openspec/changes/archive/`.
 
 ## Status & key decisions
-- Decisions locked: GitHub + Actions CI · vendored `doctest` · projectile (Ch 3) is the
-  first physics scene · OpenGL 3.3 Core · hybrid 2D/3D · gallery of interactive scenes.
+- **Done:** **Phase 0** (CMake skeleton + cross-platform GL window) and **Phase 1** (math +
+  fixed-timestep core + four integrators + 2D renderer + immediate-mode UI + Projectile and
+  integrator-comparison scenes). Both archived; CI green on all three legs.
+- **Next:** **Phase 2** — force generators (gravity/spring/drag/friction), 2D collisions +
+  restitution, constraints, conserved-quantity readouts, more mechanics scenes.
+- Decisions locked: GitHub + Actions CI · vendored `doctest`/`glad` · embedded 8×8 bitmap
+  font (text) · OpenGL 3.3 Core · `double` physics scalar · hybrid 2D/3D · gallery of scenes.
 - Open: code **license** (leaning MIT — confirm).
-- Roadmap: Phase 0 skeleton → Phase 1 (math + loop + 2D + projectile) → Phase 2
-  (forces/energy/collisions) → 3 (rotation/gases) → 4 (3D) → 5 (E&M fields) → 6
-  (waves/optics) → 7 (modern-physics explainers). See DESIGN.md §10.
+- Roadmap: Phase 0 ✅ → Phase 1 ✅ → Phase 2 (forces/energy/collisions) → 3 (rotation/gases)
+  → 4 (3D) → 5 (E&M fields) → 6 (waves/optics) → 7 (modern-physics explainers). See DESIGN.md §10.
 
 ## Notes
 - The 251 MB textbook PDF lives in `docs/Textbooks/` but is **gitignored** — reference

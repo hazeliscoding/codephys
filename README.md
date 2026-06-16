@@ -50,8 +50,17 @@ cmake --build --preset windows-msvc --config RelWithDebInfo
 .\build\windows-msvc\app\RelWithDebInfo\codephys.exe
 ```
 
-A window opens, the OpenGL version/renderer/GLSL strings print, and a triangle draws.
-Close the window or press **Esc** to exit.
+A window opens with the **scene gallery** — pick a scene on the left, press Play, and drag
+the sliders. Close the window or press **Esc** to exit.
+
+## 📚 Learn the physics
+
+CodePhys ships a **physics study guide** in [`docs/study-guide/`](docs/study-guide/README.md):
+a course-style set of notes (OpenStax _College Physics 2e_) that pairs each concept with an
+experiment to run in the app.
+
+Vectors & units · Kinematics & projectile motion · Newton's laws · Energy, momentum &
+conservation · Simulating motion faithfully · Gravitation & orbits.
 
 ## 🧪 Tests
 

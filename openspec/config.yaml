@@ -41,10 +41,20 @@ context: |
   - Switchable integrators (ExplicitEuler / SemiImplicitEuler / Verlet / RK4) are a
     pedagogical feature, not an afterthought.
 
+  Current status: Phase 0 (build skeleton + cross-platform GL window) and Phase 1 (math,
+  fixed-timestep core, four switchable integrators, 2D renderer, immediate-mode UI,
+  Projectile + integrator-comparison scenes) are COMPLETE -- specs synced to
+  openspec/specs/, changes archived under openspec/changes/archive/. CI green on
+  windows-msvc / ubuntu-gcc / ubuntu-clang. NEXT: Phase 2 (forces/energy/collisions).
+
   Workflow: spec-driven via OpenSpec. Non-trivial work starts as a change proposal,
-  not ad-hoc edits. Phased roadmap (DESIGN.md §10): Phase 0 skeleton -> Phase 1 (math +
-  loop + 2D + projectile) -> Phase 2 (forces/energy/collisions) -> 3 (rotation/gases)
-  -> 4 (3D) -> 5 (E&M fields) -> 6 (waves/optics) -> 7 (modern-physics explainers).
+  not ad-hoc edits. When a change is done, sync its delta specs to openspec/specs/ and
+  archive it. Phased roadmap (DESIGN.md §10): Phase 0 [done] -> Phase 1 [done] ->
+  Phase 2 (forces/energy/collisions) -> 3 (rotation/gases) -> 4 (3D) -> 5 (E&M fields)
+  -> 6 (waves/optics) -> 7 (modern-physics explainers).
+
+  Docs: docs/design/DESIGN.md is the design source of truth; docs/study-guide/ is a
+  physics-focused course companion (keep it about physics concepts, code as support).
 
   Git: commit only when the user asks; never push without being asked. Code license
   leaning MIT (unconfirmed).

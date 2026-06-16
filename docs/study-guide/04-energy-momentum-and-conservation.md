@@ -1,6 +1,6 @@
 # 04 · Energy, Momentum & Conservation
 
-[← Newton's Laws & Acceleration](03-newtons-laws-and-acceleration.md) · [Index](README.md) · [Next: Numerical Integration →](05-numerical-integration.md)
+[← Newton's Laws & Acceleration](03-newtons-laws-and-acceleration.md) · [Index](README.md) · [Next: Simulating Motion Faithfully →](05-numerical-integration.md)
 
 ---
 
@@ -157,4 +157,4 @@ method (semi-implicit Euler / Verlet) or a smaller `dt`.
 
 ---
 
-[← Newton's Laws & Acceleration](03-newtons-laws-and-acceleration.md) · [Index](README.md) · [Next: Numerical Integration →](05-numerical-integration.md)
+[← Newton's Laws & Acceleration](03-newtons-laws-and-acceleration.md) · [Index](README.md) · [Next: Simulating Motion Faithfully →](05-numerical-integration.md)
