@@ -4,7 +4,7 @@ A cross-platform C++ **physics simulation playground** — relearning introducto
 by implementing it, following OpenStax _College Physics 2e_. A gallery of interactive
 simulations built on a hand-rolled, renderer-agnostic physics library.
 
-📐 Full design: [`docs/design/DESIGN.md`](docs/design/DESIGN.md) · 📋 project rules: [`CLAUDE.md`](CLAUDE.md)
+📐 Full design: [`docs/design/DESIGN.md`](docs/design/DESIGN.md) · 📋 project rules: [`CLAUDE.md`](CLAUDE.md) · 📚 study guide: [`docs/study-guide/`](docs/study-guide/README.md)
 
 > 🚀 **Status: Phase 1** — the engine foundation: a `physics::math` library, a deterministic
 > fixed-timestep core with four switchable integrators, a hand-rolled 2D renderer + bitmap-font
