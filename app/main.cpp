@@ -1,148 +1,143 @@
-// CodePhys — Phase 0 "hello triangle" smoke test.
-//
-// Proves the cross-platform GL pipeline end to end: window + OpenGL 3.3 Core context
-// (platform::Window), shader compilation, a VBO/VAO upload, and a draw call. This is a
-// throwaway test, NOT the Phase 1 renderer (DESIGN §10, Phase 0).
+// CodePhys — Phase 1 application: fixed-timestep loop, time control, and the scene gallery
+// (DESIGN §7.1). Replaces the Phase 0 triangle smoke test.
 
-#include <glad/glad.h>
-#include <platform/window.hpp>
-
+#include <algorithm>
 #include <cstdio>
-#include <cstdlib>
 #include <exception>
+#include <memory>
 
-namespace {
+#include <platform/window.hpp>
+#include <render/color.hpp>
+#include <render/renderer.hpp>
+#include <ui/ui.hpp>
 
-constexpr int kWindowWidth = 960;
-constexpr int kWindowHeight = 540;
-
-// Minimal GL 3.3 Core shaders: a fixed triangle with an interpolated vertex color.
-constexpr const char* kVertexShaderSource = R"(#version 330 core
-layout (location = 0) in vec2 a_pos;
-layout (location = 1) in vec3 a_color;
-out vec3 v_color;
-void main() {
-    v_color = a_color;
-    gl_Position = vec4(a_pos, 0.0, 1.0);
-}
-)";
-
-constexpr const char* kFragmentShaderSource = R"(#version 330 core
-in vec3 v_color;
-out vec4 frag_color;
-void main() {
-    frag_color = vec4(v_color, 1.0);
-}
-)";
-
-// Compile a shader stage; report the GL info log and abort on failure.
-GLuint compile_shader(GLenum type, const char* source) {
-    const GLuint shader = glCreateShader(type);
-    glShaderSource(shader, 1, &source, nullptr);
-    glCompileShader(shader);
-
-    GLint ok = GL_FALSE;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &ok);
-    if (!ok) {
-        char log[1024] = {};
-        glGetShaderInfoLog(shader, sizeof(log), nullptr, log);
-        std::fprintf(stderr, "Shader compile failed: %s\n", log);
-        std::exit(EXIT_FAILURE);
-    }
-    return shader;
-}
-
-// Link the vertex+fragment program; report the GL info log and abort on failure.
-GLuint build_program() {
-    const GLuint vertex = compile_shader(GL_VERTEX_SHADER, kVertexShaderSource);
-    const GLuint fragment = compile_shader(GL_FRAGMENT_SHADER, kFragmentShaderSource);
-
-    const GLuint program = glCreateProgram();
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
-    glLinkProgram(program);
-
-    GLint ok = GL_FALSE;
-    glGetProgramiv(program, GL_LINK_STATUS, &ok);
-    if (!ok) {
-        char log[1024] = {};
-        glGetProgramInfoLog(program, sizeof(log), nullptr, log);
-        std::fprintf(stderr, "Program link failed: %s\n", log);
-        std::exit(EXIT_FAILURE);
-    }
-
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-    return program;
-}
-
-// Drain the GL error queue. Returns true if no errors were reported.
-bool gl_errors_clean(const char* where) {
-    bool clean = true;
-    for (GLenum err = glGetError(); err != GL_NO_ERROR; err = glGetError()) {
-        std::fprintf(stderr, "GL error 0x%04X at %s\n", err, where);
-        clean = false;
-    }
-    return clean;
-}
-
-}  // namespace
+#include "scene_manager.hpp"
+#include "scenes/ch03_projectile.hpp"
+#include "scenes/integrator_comparison.hpp"
 
 int main() {
     try {
-        platform::Window window(kWindowWidth, kWindowHeight, "CodePhys - Phase 0");
+        platform::Window window(1280, 800, "CodePhys - Phase 1");
 
         const platform::GlInfo info = platform::query_gl_info();
         std::printf("OpenGL version : %s\n", info.version.c_str());
         std::printf("Renderer       : %s\n", info.renderer.c_str());
         std::printf("GLSL version   : %s\n", info.glsl_version.c_str());
 
-        // A single triangle in normalized device coordinates: { x, y, r, g, b } per vertex.
-        const float vertices[] = {
-            0.0f,  0.6f,  1.0f, 0.2f, 0.2f,  // top    (red)
-            -0.6f, -0.5f, 0.2f, 1.0f, 0.2f,  // left   (green)
-            0.6f,  -0.5f, 0.2f, 0.4f, 1.0f,  // right  (blue)
-        };
+        render::Renderer renderer;
 
-        GLuint vao = 0;
-        GLuint vbo = 0;
-        glGenVertexArrays(1, &vao);
-        glGenBuffers(1, &vbo);
-        glBindVertexArray(vao);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        app::SceneManager manager;
+        manager.add(std::make_unique<app::ProjectileScene>());
+        manager.add(std::make_unique<app::IntegratorComparisonScene>());
+        manager.select(0);
 
-        constexpr GLsizei stride = 5 * sizeof(float);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, nullptr);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-                              reinterpret_cast<const void*>(2 * sizeof(float)));
-        glEnableVertexAttribArray(1);
+        // Time control (DESIGN §7.1).
+        bool playing = true;
+        bool step_request = false;
+        double time_scale = 1.0;
+        double dt = 1.0 / 240.0;  // physics timestep (s)
+        double accumulator = 0.0;
+        double last_time = platform::now_seconds();
 
-        const GLuint program = build_program();
-
+        bool prev_mouse_down = false;
+        bool prev_space = false;
         bool reported = false;
-        window.run([&](int width, int height) {
-            glViewport(0, 0, width, height);
-            glClearColor(0.08f, 0.10f, 0.14f, 1.0f);  // known clear color
-            glClear(GL_COLOR_BUFFER_BIT);
 
-            glUseProgram(program);
-            glBindVertexArray(vao);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+        window.run([&](int fb_w, int fb_h) {
+            // ---- Build the input snapshot from platform (keeps GLFW out of ui/scenes). ----
+            ui::InputState input;
+            double mx = 0.0, my = 0.0;
+            window.mouse_position(mx, my);
+            input.mouse = {mx, my};
+            input.mouse_down = window.mouse_left_down();
+            input.mouse_pressed = input.mouse_down && !prev_mouse_down;
+            input.mouse_released = !input.mouse_down && prev_mouse_down;
+            prev_mouse_down = input.mouse_down;
+            input.scroll = window.take_scroll();
 
-            // Report the smoke-test result exactly once, after the first frame.
+            const bool space = window.key_down(platform::keys::space);
+            const bool space_pressed = space && !prev_space;
+            prev_space = space;
+            input.key_down[platform::keys::space] = space;
+            input.key_pressed[platform::keys::space] = space_pressed;
+            if (space_pressed) {
+                playing = !playing;  // space toggles play/pause
+            }
+
+            // ---- Fixed-timestep stepping (DESIGN §7.1). ----
+            const double now = platform::now_seconds();
+            const double frame = std::min(now - last_time, 0.25);  // clamp catch-up spiral
+            last_time = now;
+
+            app::Scene* scene = manager.active();
+            double alpha = 0.0;
+            if (scene != nullptr) {
+                if (playing) {
+                    accumulator += frame * time_scale;
+                    while (accumulator >= dt) {
+                        scene->update(dt);
+                        accumulator -= dt;
+                    }
+                    alpha = accumulator / dt;
+                } else if (step_request) {
+                    scene->update(dt);  // advance exactly one tick
+                    step_request = false;
+                }
+            }
+
+            // ---- World render pass (scene's camera). ----
+            renderer.clear(render::Color{0.07f, 0.08f, 0.11f, 1.0f});
+            if (scene != nullptr) {
+                renderer.begin(scene->camera(fb_w, fb_h));
+                scene->render(renderer, alpha);
+                renderer.end();
+            }
+
+            // ---- UI pass (screen-space). ----
+            render::Camera2D ui_cam;
+            ui_cam.viewport_width = fb_w;
+            ui_cam.viewport_height = fb_h;
+            renderer.begin(ui_cam);
+
+            constexpr double kPanelWidth = 400.0;
+            ui::begin(renderer, input, {16.0, 16.0}, kPanelWidth);
+            ui::heading("CodePhys");
+            ui::help("Pick a scene, press Play (or Space), and drag the sliders. Esc quits.");
+            ui::separator();
+            manager.draw_gallery();
+            ui::separator();
+            ui::label(playing ? "State: Playing" : "State: Paused");
+            if (ui::button(playing ? "Pause" : "Play")) {
+                playing = !playing;
+            }
+            if (ui::button("Step (1 frame)")) {
+                step_request = true;
+            }
+            if (ui::button("Reset") && scene != nullptr) {
+                scene->reset();
+            }
+            ui::sliderFloat("time scale", &time_scale, 0.1, 4.0);
+            ui::sliderFloat("dt (s)", &dt, 0.001, 0.02);
+            ui::end();
+
+            if (scene != nullptr) {
+                // Dock the scene panel flush to the right edge.
+                const double right_x = static_cast<double>(fb_w) - kPanelWidth;
+                ui::begin(renderer, input, {right_x, 12.0}, kPanelWidth);
+                scene->ui(input);
+                ui::end();
+            }
+
+            renderer.end();
+
             if (!reported) {
                 reported = true;
-                if (gl_errors_clean("first frame")) {
-                    std::printf("Smoke test: triangle drawn, no GL errors.\n");
+                if (platform::check_gl_errors("first frame")) {
+                    std::printf("Phase 1: scene gallery rendered, no GL errors.\n");
                 }
             }
         });
 
-        glDeleteProgram(program);
-        glDeleteBuffers(1, &vbo);
-        glDeleteVertexArrays(1, &vao);
         return EXIT_SUCCESS;
     } catch (const std::exception& e) {
         std::fprintf(stderr, "Fatal: %s\n", e.what());

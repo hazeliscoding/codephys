@@ -23,6 +23,12 @@ void key_callback(GLFWwindow* window, int key, int /*scancode*/, int action, int
     }
 }
 
+void scroll_callback(GLFWwindow* window, double /*x_offset*/, double y_offset) {
+    if (auto* accum = static_cast<double*>(glfwGetWindowUserPointer(window))) {
+        *accum += y_offset;
+    }
+}
+
 std::string gl_string(GLenum name) {
     const GLubyte* value = glGetString(name);
     return value ? reinterpret_cast<const char*>(value) : "(null)";
@@ -61,6 +67,8 @@ Window::Window(int width, int height, const std::string& title) {
     }
 
     glfwSetKeyCallback(window, key_callback);
+    glfwSetWindowUserPointer(window, &scroll_accum_);
+    glfwSetScrollCallback(window, scroll_callback);
     handle_ = window;
 }
 
@@ -88,12 +96,54 @@ void Window::run(const RenderCallback& render) {
     }
 }
 
+void Window::mouse_position(double& x, double& y) const {
+    auto* window = static_cast<GLFWwindow*>(handle_);
+    double cursor_x = 0.0;
+    double cursor_y = 0.0;
+    glfwGetCursorPos(window, &cursor_x, &cursor_y);
+    int win_w = 0, win_h = 0, fb_w = 0, fb_h = 0;
+    glfwGetWindowSize(window, &win_w, &win_h);
+    glfwGetFramebufferSize(window, &fb_w, &fb_h);
+    // Scale window coords to framebuffer pixels (matters under HiDPI).
+    x = win_w > 0 ? cursor_x * static_cast<double>(fb_w) / win_w : cursor_x;
+    y = win_h > 0 ? cursor_y * static_cast<double>(fb_h) / win_h : cursor_y;
+}
+
+bool Window::mouse_left_down() const {
+    auto* window = static_cast<GLFWwindow*>(handle_);
+    return glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+}
+
+bool Window::key_down(int key) const {
+    auto* window = static_cast<GLFWwindow*>(handle_);
+    return glfwGetKey(window, key) == GLFW_PRESS;
+}
+
+double Window::take_scroll() {
+    const double s = scroll_accum_;
+    scroll_accum_ = 0.0;
+    return s;
+}
+
 GlInfo query_gl_info() {
     return GlInfo{
         gl_string(GL_VERSION),
         gl_string(GL_RENDERER),
         gl_string(GL_SHADING_LANGUAGE_VERSION),
     };
+}
+
+double now_seconds() {
+    return glfwGetTime();
+}
+
+bool check_gl_errors(const char* where) {
+    bool clean = true;
+    for (GLenum err = glGetError(); err != GL_NO_ERROR; err = glGetError()) {
+        std::fprintf(stderr, "GL error 0x%04X at %s\n", err, where ? where : "?");
+        clean = false;
+    }
+    return clean;
 }
 
 }  // namespace platform

@@ -1,9 +1,4 @@
-#include <physics/math/vec2.hpp>
-
-namespace physics::math {
-
-Vec2 midpoint(Vec2 a, Vec2 b) {
-    return {(a.x + b.x) * 0.5, (a.y + b.y) * 0.5};
-}
-
-}  // namespace physics::math
+// The physics math module is header-only (constexpr value types). This TU exists so the
+// headers are compiled as part of the `physics` static library and any future non-inline
+// math helpers have a home. Core (Particle/World/integrators) adds its own sources.
+#include <physics/math.hpp>

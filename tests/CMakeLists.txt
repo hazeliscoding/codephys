@@ -4,6 +4,7 @@
 add_executable(codephys_tests
     test_main.cpp
     test_math.cpp
+    test_physics.cpp
 )
 target_link_libraries(codephys_tests
     PRIVATE

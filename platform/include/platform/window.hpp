@@ -31,9 +31,29 @@ public:
     // poll events, invoke `render`, swap buffers.
     void run(const RenderCallback& render);
 
+    // Per-frame input queries (valid while the window is alive). Mouse coordinates are in
+    // framebuffer pixels (origin top-left), matching the renderer's screen space.
+    void mouse_position(double& x, double& y) const;
+    bool mouse_left_down() const;
+    bool key_down(int key) const;  // key codes: ASCII for letters/space (see keys below)
+    double take_scroll();          // accumulated wheel delta since the last call
+
 private:
     void* handle_ = nullptr;  // GLFWwindow*, opaque so this header needs no GLFW include
+    double scroll_accum_ = 0.0;
 };
+
+// Key codes the app needs (GLFW numbering; ASCII for these). Avoids leaking GLFW headers.
+namespace keys {
+inline constexpr int space = 32;
+inline constexpr int r = 82;
+}  // namespace keys
+
+// Seconds since GLFW initialization — monotonic time source for the simulation loop.
+double now_seconds();
+
+// Drain the GL error queue; print any errors and return true if the queue was clean.
+bool check_gl_errors(const char* where);
 
 // OpenGL/driver strings captured from the current context — for cross-platform and
 // WSLg/software-GL diagnostics.

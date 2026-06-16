@@ -1,11 +1,8 @@
 #pragma once
 
-// Phase 0 stub for the renderer module (DESIGN §7.2). Wired but minimal: the real 2D/3D
-// renderer lands in Phase 1. render depends downward only on physics::math.
+// Umbrella header for the render module (DESIGN §7.2). Phase 1 = 2D renderer + camera +
+// color. render depends downward only on physics::math (and OpenGL internally).
 
-namespace render {
-
-// Placeholder public symbol; replaced by Renderer2D/Renderer3D in Phase 1.
-const char* module_name();
-
-}  // namespace render
+#include <render/camera2d.hpp>
+#include <render/color.hpp>
+#include <render/renderer.hpp>

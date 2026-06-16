@@ -408,12 +408,12 @@ the **engine capabilities** each cluster needs (§10).
 Phased so that **every phase ends with something runnable and visibly cool**, and each
 phase adds a reusable engine capability rather than a one-off.
 
-### Phase 0 — Skeleton & "hello triangle" (cross-platform proof)
+### Phase 0 — Skeleton & "hello triangle" (cross-platform proof) ✅ DONE
 - CMake + presets; GLFW via FetchContent; glad vendored.
 - Open a window on **both** Windows and WSL; clear screen; draw a triangle; render text.
 - **Exit criterion:** identical build/run on Win + WSL. (De-risks the #1 unknown early.)
 
-### Phase 1 — Math + core loop + 2D renderer + minimal UI
+### Phase 1 — Math + core loop + 2D renderer + minimal UI ✅ DONE
 - `physics::math` with unit tests.
 - Fixed-timestep loop with interpolation; Play/Pause/Step/Reset/time-scale.
 - `Renderer` 2D primitives (lines, circles, polygons, arrows, text) + `Camera2D`.

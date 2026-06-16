@@ -6,14 +6,27 @@ simulations built on a hand-rolled, renderer-agnostic physics library.
 
 📐 Full design: [`docs/design/DESIGN.md`](docs/design/DESIGN.md) · 📋 project rules: [`CLAUDE.md`](CLAUDE.md)
 
-> 🚧 **Status: Phase 0** — a buildable skeleton that opens a window, brings up an OpenGL
-> 3.3 Core context, and renders a "hello triangle" on Windows and Linux/WSL2. No physics yet.
+> 🚀 **Status: Phase 1** — the engine foundation: a `physics::math` library, a deterministic
+> fixed-timestep core with four switchable integrators, a hand-rolled 2D renderer + bitmap-font
+> text, an immediate-mode UI, and a scene gallery. Flagship scenes: **Projectile (Ch 3)** and an
+> **integrator comparison** (Euler vs RK4 on an orbit). Runs on Windows and Linux/WSL2.
 
 ## ✨ Highlights
 
 - 🎯 **One runtime dependency: GLFW** (fetched & pinned by CMake). `glad` + `doctest` are vendored.
 - 🧪 **`physics/` is stdlib-only** — layering is enforced by CMake target visibility, not convention.
+- 🔢 **Four switchable integrators** (Explicit/Semi-implicit Euler, Velocity Verlet, RK4),
+  validated headless against closed-form solutions (projectile range, Kepler) and conservation laws.
 - 🖥️ **Identical on Windows (MSVC) and Linux/WSL2** (GCC/Clang), verified in CI.
+
+## 🎮 Scenes & controls
+
+- **Projectile (Ch 3)** — sliders for launch speed, angle, and gravity; live trajectory,
+  velocity vector, energy plot, and `R = v0²·sin(2θ)/g` readout.
+- **Integrators (orbit)** — the same circular-orbit start under Explicit Euler (red, spirals out)
+  and RK4 (green, stable).
+- **Time control** — Play/Pause (or **space**), **Step** one tick, **Reset**, plus time-scale and
+  `dt` sliders (crank `dt` to watch a scheme go unstable). **Esc** quits.
 
 ## 🔧 Prerequisites
 

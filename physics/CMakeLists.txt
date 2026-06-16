@@ -2,6 +2,8 @@
 # no GLFW/OpenGL/glad/render/ui include paths or link deps reach this target.
 add_library(physics STATIC
     src/math.cpp
+    src/integrator.cpp
+    src/world.cpp
 )
 target_include_directories(physics PUBLIC include)
 target_link_libraries(physics PRIVATE codephys::warnings)
