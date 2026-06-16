@@ -15,6 +15,9 @@
 
 - _College Physics 2e_ **Ch. 6.5–6.6** — Newton's universal gravitation; Kepler's laws.
 - **Ch. 6.2** — Centripetal acceleration.
+- **Primary sources:** Newton (1687) *Principia* (universal gravitation); Kepler (1609)
+  *Astronomia Nova* (1st & 2nd laws) and (1619) *Harmonices Mundi* (3rd law, T² ∝ a³). See
+  [`../REFERENCES.md`](../REFERENCES.md).
 
 ---
 

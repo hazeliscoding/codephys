@@ -18,7 +18,11 @@
 ## 📖 Textbook map
 
 This underpins the mechanics in **Ch. 6–8** (orbits, oscillations, energy). The numerical
-detail is methods, not a physics chapter; reference: Glenn Fiedler, _"Integration Basics."_
+detail is methods, not a physics chapter. **Primary sources** for the four integrators:
+Euler 1768 (explicit Euler); Runge 1895 & Kutta 1901 (RK4); Störmer 1907 (symplectic Euler);
+Verlet 1967 & Swope et al. 1982 (velocity Verlet); Hairer, Lubich & Wanner 2006 on why
+symplectic methods keep energy bounded — all in [`../REFERENCES.md`](../REFERENCES.md). For a
+gentle, code-first walkthrough see also Glenn Fiedler, _"Integration Basics."_
 
 ---
 

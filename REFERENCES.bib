@@ -1,0 +1,192 @@
+% =============================================================================
+% CodePhys - Bibliography
+% =============================================================================
+% Primary-literature and standard-reference sources for the physics and the
+% numerical methods in this repository. Journal/book entries with a DOI were
+% verified against CrossRef (https://api.crossref.org); pre-DOI classics
+% (Newton, Kepler, Euler, Kutta, Stormer) are formatted from their canonical
+% citations.
+%
+% Citation keys are used in the source-comment references and in
+% docs/REFERENCES.md, which maps each source to the code that uses it.
+% =============================================================================
+
+% ----- Numerical integration of ODEs -----------------------------------------
+
+@book{euler1768institutionum,
+  author    = {Euler, Leonhard},
+  title     = {Institutionum Calculi Integralis (Foundations of Integral Calculus), Vol. 1},
+  publisher = {Imperial Academy of Sciences},
+  address   = {St. Petersburg},
+  year      = {1768},
+  note      = {Origin of the forward (explicit) Euler method}
+}
+
+@article{runge1895numerische,
+  author    = {Runge, Carl},
+  title     = {{\"U}ber die numerische Aufl{\"o}sung von Differentialgleichungen},
+  journal   = {Mathematische Annalen},
+  year      = {1895},
+  volume    = {46},
+  number    = {2},
+  pages     = {167--178},
+  doi       = {10.1007/BF01446807}
+}
+
+@article{kutta1901beitrag,
+  author    = {Kutta, Wilhelm},
+  title     = {Beitrag zur n{\"a}herungsweisen Integration totaler Differentialgleichungen},
+  journal   = {Zeitschrift f{\"u}r Mathematik und Physik},
+  year      = {1901},
+  volume    = {46},
+  pages     = {435--453},
+  note      = {With Runge (1895), the classical fourth-order Runge--Kutta method}
+}
+
+@article{stormer1907trajectoires,
+  author    = {St{\"o}rmer, Carl},
+  title     = {Sur les trajectoires des corpuscules {\'e}lectris{\'e}s dans l'espace},
+  journal   = {Archives des Sciences Physiques et Naturelles},
+  year      = {1907},
+  volume    = {24},
+  pages     = {5--18, 113--158, 221--247},
+  note      = {Origin of the St{\"o}rmer (leapfrog / symplectic) method}
+}
+
+@article{verlet1967computer,
+  author    = {Verlet, Loup},
+  title     = {Computer ``Experiments'' on Classical Fluids. {I}. Thermodynamical
+               Properties of {L}ennard-{J}ones Molecules},
+  journal   = {Physical Review},
+  year      = {1967},
+  volume    = {159},
+  number    = {1},
+  pages     = {98--103},
+  doi       = {10.1103/PhysRev.159.98}
+}
+
+@article{swope1982computer,
+  author    = {Swope, William C. and Andersen, Hans C. and Berens, Peter H. and
+               Wilson, Kent R.},
+  title     = {A Computer Simulation Method for the Calculation of Equilibrium
+               Constants for the Formation of Physical Clusters of Molecules},
+  journal   = {The Journal of Chemical Physics},
+  year      = {1982},
+  volume    = {76},
+  number    = {1},
+  pages     = {637--649},
+  doi       = {10.1063/1.442716},
+  note      = {Introduces the velocity form of the Verlet algorithm}
+}
+
+@article{hairer2003geometric,
+  author    = {Hairer, Ernst and Lubich, Christian and Wanner, Gerhard},
+  title     = {Geometric Numerical Integration Illustrated by the
+               {St\"ormer--Verlet} Method},
+  journal   = {Acta Numerica},
+  year      = {2003},
+  volume    = {12},
+  pages     = {399--450},
+  doi       = {10.1017/S0962492902000144}
+}
+
+@book{hairer1993solving,
+  author    = {Hairer, Ernst and N{\o}rsett, Syvert P. and Wanner, Gerhard},
+  title     = {Solving Ordinary Differential Equations {I}: Nonstiff Problems},
+  edition   = {2},
+  publisher = {Springer},
+  address   = {Berlin},
+  year      = {1993},
+  doi       = {10.1007/978-3-540-78862-1}
+}
+
+@book{hairer2006geometric,
+  author    = {Hairer, Ernst and Lubich, Christian and Wanner, Gerhard},
+  title     = {Geometric Numerical Integration: Structure-Preserving Algorithms
+               for Ordinary Differential Equations},
+  edition   = {2},
+  publisher = {Springer},
+  address   = {Berlin},
+  year      = {2006},
+  doi       = {10.1007/3-540-30666-8}
+}
+
+% ----- Classical mechanics: Newton, Kepler, conservation laws ----------------
+
+@book{newton1687principia,
+  author    = {Newton, Isaac},
+  title     = {Philosophi{\ae} Naturalis Principia Mathematica},
+  publisher = {Royal Society},
+  address   = {London},
+  year      = {1687},
+  note      = {The three laws of motion and universal gravitation}
+}
+
+@book{kepler1609astronomia,
+  author    = {Kepler, Johannes},
+  title     = {Astronomia Nova},
+  address   = {Prague},
+  year      = {1609},
+  note      = {Kepler's first and second laws of planetary motion}
+}
+
+@book{kepler1619harmonices,
+  author    = {Kepler, Johannes},
+  title     = {Harmonices Mundi (The Harmony of the World)},
+  address   = {Linz},
+  year      = {1619},
+  note      = {Kepler's third law: T^2 is proportional to a^3}
+}
+
+@article{noether1918invariante,
+  author    = {Noether, Emmy},
+  title     = {Invariante Variationsprobleme},
+  journal   = {Nachrichten von der Gesellschaft der Wissenschaften zu G{\"o}ttingen,
+               Mathematisch-Physikalische Klasse},
+  year      = {1918},
+  pages     = {235--257},
+  note      = {Symmetries and conservation laws (energy, momentum, angular momentum)}
+}
+
+@book{goldstein2002classical,
+  author    = {Goldstein, Herbert and Poole, Charles P. and Safko, John L.},
+  title     = {Classical Mechanics},
+  edition   = {3},
+  publisher = {Addison-Wesley},
+  address   = {San Francisco},
+  year      = {2002}
+}
+
+% ----- Physical constants -----------------------------------------------------
+
+@article{tiesinga2021codata,
+  author    = {Tiesinga, Eite and Mohr, Peter J. and Newell, David B. and
+               Taylor, Barry N.},
+  title     = {{CODATA} Recommended Values of the Fundamental Physical Constants: 2018},
+  journal   = {Reviews of Modern Physics},
+  year      = {2021},
+  volume    = {93},
+  number    = {2},
+  pages     = {025010},
+  doi       = {10.1103/RevModPhys.93.025010}
+}
+
+@techreport{bipm2019si,
+  author      = {{Bureau International des Poids et Mesures (BIPM)}},
+  title       = {The International System of Units (SI)},
+  institution = {BIPM},
+  edition     = {9},
+  year        = {2019},
+  note        = {Defines exact values of c, h, k_B; standard gravity g = 9.80665 m/s^2}
+}
+
+% ----- Course textbook anchoring the study guide -----------------------------
+
+@book{openstax2022collegephysics,
+  author    = {Urone, Paul Peter and Hinrichs, Roger},
+  title     = {College Physics 2e},
+  publisher = {OpenStax, Rice University},
+  address   = {Houston, TX},
+  year      = {2022},
+  url       = {https://openstax.org/details/books/college-physics-2e}
+}

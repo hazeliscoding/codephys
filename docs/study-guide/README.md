@@ -5,7 +5,9 @@
 > where the relevant code lives — so you can poke the physics, not just read it.
 
 This guide is **about the physics**. For the engine internals (rendering, UI, the simulation
-loop, the layered architecture) see [`docs/design/DESIGN.md`](../design/DESIGN.md).
+loop, the layered architecture) see [`docs/design/DESIGN.md`](../design/DESIGN.md). For the
+**primary-literature sources** behind each law, method, and constant, see
+[`docs/REFERENCES.md`](../REFERENCES.md).
 
 ---
 

@@ -1,28 +1,32 @@
 #include <physics/core/integrator.hpp>
 
 // Integrator implementations (DESIGN §8.2). Citations: College Physics 2e §2 (kinematics)
-// for Euler-family stepping; standard numerical-methods references for Verlet/RK4.
+// for Euler-family stepping. Primary sources for each scheme are noted below and listed in
+// docs/REFERENCES.md / REFERENCES.bib.
 
 namespace physics::core {
 
 namespace {
 
 // Explicit (Forward) Euler — simplest; visibly gains energy. Teaching baseline.
+// Source: Euler (1768), Institutionum calculi integralis. O(dt) local error.
 State step_explicit_euler(const State& s, const AccelFn& accel, double t, double dt) {
     const Vec2 a = accel(s.position, s.velocity, t);
     return State{s.position + s.velocity * dt, s.velocity + a * dt};
 }
 
 // Semi-implicit (symplectic) Euler — update velocity first, then position with the new
-// velocity. Energy-stable for oscillators/orbits.
+// velocity. Being symplectic, it has BOUNDED energy drift for oscillators/orbits (not exact
+// conservation). Source: Störmer (1907); Hairer, Lubich & Wanner (2003, 2006).
 State step_semi_implicit_euler(const State& s, const AccelFn& accel, double t, double dt) {
     const Vec2 a = accel(s.position, s.velocity, t);
     const Vec2 v_new = s.velocity + a * dt;
     return State{s.position + v_new * dt, v_new};
 }
 
-// Velocity Verlet — time-reversible; assumes acceleration independent of velocity
-// (true for Phase 1 force models). College Physics 2e §2.5 (constant-accel kinematics).
+// Velocity Verlet — time-reversible, symplectic, O(dt^3) local error; assumes acceleration
+// independent of velocity (true for Phase 1 force models). College Physics 2e §2.5
+// (constant-accel kinematics). Source: Verlet (1967); velocity form, Swope et al. (1982).
 State step_verlet(const State& s, const AccelFn& accel, double t, double dt) {
     const Vec2 a = accel(s.position, s.velocity, t);
     const Vec2 p_new = s.position + s.velocity * dt + a * (0.5 * dt * dt);
@@ -31,7 +35,8 @@ State step_verlet(const State& s, const AccelFn& accel, double t, double dt) {
     return State{p_new, v_new};
 }
 
-// Classic 4th-order Runge-Kutta on y = (position, velocity). Gold standard for accuracy.
+// Classic 4th-order Runge-Kutta on y = (position, velocity). Gold standard for accuracy,
+// O(dt^5) local error. Source: Runge (1895); Kutta (1901).
 State step_rk4(const State& s, const AccelFn& accel, double t, double dt) {
     const Vec2 dp1 = s.velocity;
     const Vec2 dv1 = accel(s.position, s.velocity, t);

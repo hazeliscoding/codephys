@@ -3,6 +3,10 @@
 // Physical and mathematical constants, SI units, cross-checked against the textbook's
 // units chapter (College Physics 2e §1.2). Names carry no unit suffix because the unit is
 // fixed and documented per constant. stdlib only.
+//
+// Authoritative values: CODATA 2018 (Tiesinga et al. 2021, Rev. Mod. Phys. 93, 025010) and
+// the SI brochure (BIPM 2019) — c, h, k_B are exact by SI definition; g_earth = 9.80665 is
+// standard gravity. See docs/REFERENCES.md.
 
 namespace physics::math {
 

@@ -1,0 +1,80 @@
+cff-version: 1.2.0
+message: "If you use CodePhys in teaching or research, please cite it as below."
+title: "CodePhys: a cross-platform C++ physics-simulation playground"
+abstract: >-
+  CodePhys is an educational, cross-platform C++ physics engine and gallery of
+  interactive simulations. It pairs a renderer-agnostic, headlessly testable
+  physics library (vector math, a deterministic fixed-timestep core, and four
+  switchable integrators: explicit Euler, semi-implicit/symplectic Euler,
+  velocity Verlet, and classical RK4) with a hand-rolled 2D renderer and
+  immediate-mode UI. Integrators and physics models are validated headless
+  against closed-form solutions (projectile range, Kepler orbits) and
+  conservation laws (energy, momentum, angular momentum) in CI. Every mechanism
+  is mapped to OpenStax College Physics 2e and to the primary literature.
+type: software
+authors:
+  - given-names: Hazel
+    family-names: Granados
+keywords:
+  - physics simulation
+  - numerical integration
+  - Runge-Kutta
+  - velocity Verlet
+  - symplectic integrator
+  - classical mechanics
+  - Kepler orbits
+  - C++
+  - science education
+license: MIT
+repository-code: "https://github.com/hazeliscoding/codephys"
+date-released: "2026-06-16"
+references:
+  - type: book
+    title: "College Physics 2e"
+    authors:
+      - family-names: Urone
+        given-names: "Paul Peter"
+      - family-names: Hinrichs
+        given-names: Roger
+    publisher:
+      name: "OpenStax, Rice University"
+    year: 2022
+  - type: article
+    title: "Computer experiments on classical fluids. I. Thermodynamical properties of Lennard-Jones molecules"
+    authors:
+      - family-names: Verlet
+        given-names: Loup
+    journal: "Physical Review"
+    volume: 159
+    issue: 1
+    start: 98
+    end: 103
+    year: 1967
+    doi: "10.1103/PhysRev.159.98"
+  - type: article
+    title: "Über die numerische Auflösung von Differentialgleichungen"
+    authors:
+      - family-names: Runge
+        given-names: Carl
+    journal: "Mathematische Annalen"
+    volume: 46
+    issue: 2
+    start: 167
+    end: 178
+    year: 1895
+    doi: "10.1007/BF01446807"
+  - type: article
+    title: "Geometric numerical integration illustrated by the Störmer-Verlet method"
+    authors:
+      - family-names: Hairer
+        given-names: Ernst
+      - family-names: Lubich
+        given-names: Christian
+      - family-names: Wanner
+        given-names: Gerhard
+    journal: "Acta Numerica"
+    volume: 12
+    start: 399
+    end: 450
+    year: 2003
+    doi: "10.1017/S0962492902000144"
