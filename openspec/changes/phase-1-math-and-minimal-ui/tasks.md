@@ -61,6 +61,6 @@
 
 - [x] 8.1 Build warnings-clean and run `ctest` headless on Windows (MSVC) and Linux/WSL (GCC) <!-- both green; 10 cases / 53 assertions -->
 - [x] 8.2 Run the app on both platforms: gallery loads, projectile + comparison scenes render, controls work, clean shutdown <!-- Windows: GL 3.3 Intel Arc; Linux/WSLg: GL 4.5 llvmpipe; both GL-clean -->
-- [ ] 8.3 Confirm CI is green on all three legs (windows-msvc, ubuntu-gcc, ubuntu-clang) <!-- blocked: GitHub remote deleted by user (to be reinitialized); ci.yml unchanged & correct -->
+- [x] 8.3 Confirm CI is green on all three legs (windows-msvc, ubuntu-gcc, ubuntu-clang) <!-- run 27588745529: windows-msvc, ubuntu-gcc, ubuntu-clang all green -->
 - [x] 8.4 Update `README.md` (Phase 1 status, scene list, controls) and `docs/design/DESIGN.md` status/notes
 - [x] 8.5 Run `openspec validate phase-1-math-and-minimal-ui` and resolve any issues
